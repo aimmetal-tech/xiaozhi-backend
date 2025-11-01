@@ -21,8 +21,8 @@ class ChatService:
         Yields:
             ChatResponse: 流式的聊天响应
         """
-        # 检查是否为阿里云百炼平台
-        if request.base_url and "dashscope.aliyuncs.com" in request.base_url:
+        # 检查是否为阿里云百炼平台的模型
+        if request.model and "qwen" in request.model.lower():
             async for chunk in ChatService._aliyun_bailian_chat_completion(request):
                 yield chunk
             return
@@ -146,11 +146,14 @@ class ChatService:
         if "/" in request.model:
             model_name = request.model.split("/")[-1]
         
+        # 阿里云百炼平台URL
+        aliyuncs_base_url = 'https://dashscope.aliyuncs.com/compatible-mode/v1'
+        
         try:
             # 创建异步OpenAI客户端
             client = AsyncOpenAI(
                 api_key=os.getenv("QWEN_API_KEY"),
-                base_url=request.base_url,
+                base_url=aliyuncs_base_url,
                 http_client=httpx.AsyncClient(
                     timeout=60.0,
                 ),
