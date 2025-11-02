@@ -28,7 +28,6 @@ Post
 {
     
     "model": "qwen/qwen-plus",
-    "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
     "messages": [
         {
             "role":"user",
